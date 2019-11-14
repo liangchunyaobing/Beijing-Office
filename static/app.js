@@ -1036,14 +1036,14 @@ require([
     }
   
     function deletebarChart(chart1, chart2, chart3,chart4) {
-      chart1.data.datasets.splice(1, (chart1.data.datasets.length - 1))
+      chart1.data.datasets.splice(0, chart1.data.datasets.length)
       chart1.update()
-      chart2.data.datasets.splice(1, (chart2.data.datasets.length - 1))
+      chart2.data.datasets.splice(0, chart2.data.datasets.length)
       chart2.update()
       //creatchart()
-      chart3.data.datasets.splice(1, (chart3.data.datasets.length - 1))
+      chart3.data.datasets.splice(0, chart3.data.datasets.length)
       chart3.update()
-      chart4.data.datasets.splice(1, (chart4.data.datasets.length - 1))
+      chart4.data.datasets.splice(0, chart4.data.datasets.length)
       chart4.update()
     }
   });
