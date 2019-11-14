@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://js.arcgis.com/4.11/esri/themes/light/main.css" />
+  <link rel="stylesheet" href="static/style.css" />
+  <title>Beijing Office</title>
+</head>
+
+<body>
+  <div id="fullDiv">
+    <!--地图-->
+    <div id="viewDiv"></div>
+    <!--  -->
+    <div id='showDiv'>
+      <!--显示  -->
+      <div id="layer-showing">
+        <form>
+          <div class="form-group row mb-1">
+            <label class="col-sm-4 col-form-label col-form-label-sm">View Type</label>
+            <div class="col-sm-8">
+              <button id="coworking-layer-button" type="button" class="btn btn-info btn-sm mr-1">Shared</button>
+              <button id="traworking-layer-button" type="button" class="btn btn-info btn-sm">Traditional</button>
+            </div>
+          </div>
+          <hr>
+          <div class="form-group row mb-1">
+            <label class="col-sm-5 col-form-label col-form-label-sm">Shared</label>
+            <div class="col-sm-7">
+              <select class="form-control form-control-sm" id="co-fieldSelect">
+                <option value="0">Renting Price</option>
+                <option value="1">Distance to Subway</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row mb-1">
+            <label class="col-sm-5 col-form-label col-form-label-sm">Traditional</label>
+            <div class="col-sm-7">
+              <select class="form-control form-control-sm" id="tra-fieldSelect">
+                <option value="0">Renting Price</option>
+                <option value="1">Area</option>
+                <option value="2">Distance to Subway</option>
+              </select>
+            </div>
+          </div>          
+        </form>
+      </div>
+      <!--选择  -->
+    </div>
+    <div id="shortDiv">
+      <button id="selecting-button" type="button" class="btn btn-info btn-sm mr-1 px-3">Filter</button>
+      <button id="comparing-button" type="button" class="btn btn-info btn-sm mr-1 px-3">Compare</button>
+    </div>
+    <div id="infoDiv">
+      <!--筛选  -->
+      <div id="layer-select">
+        <form>
+          <div class="form-group row mb-1">
+            <label class="col-sm-5 col-form-label col-form-label-sm font-weight-bold">Office Type</label>
+            <div class="col-sm-7">
+              <div class="btn-group w-100" role="group">
+                <button id="coworking-layer-select" type="button" class="btn btn-outline-info btn-sm">Shared</button>
+                <button id="traworking-layer-select" type="button" class="btn btn-outline-info btn-sm">Traditional</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div id="co-office-layer">
+        <form>
+          <div class="form-group">
+            <label>District</label>
+            <select class="form-control form-control-sm" id="co-districtSelect">
+              <option value="0">All</option>
+              <option value="1">Dongcheng</option>
+              <option value="2">Xicheng</option>
+              <option value="3">Chaoyang</option>
+              <option value="4">Haidian</option>
+              <option value="5">Fengtai</option>
+            </select>
+            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+          </div>
+          <div class="form-group">
+            <label>Price (￥/seat/month)</label>
+            <div class="form-row">
+              <div class="col-sm-4">
+                  <input type="number" name="Price1" id="co-pri-low" maxlength="4" size="6" value="600" class="form-control form-control-sm">
+              </div>
+              <div class="col-sm-1 text-center" style="line-height: 32px;">-</div>
+              <div class="col-sm-4">
+                  <input type="number" name="Price2" id="co-pri-high" maxlength="4" size="6" value="10000" class="form-control form-control-sm">
+              </div>
+            </div>            
+          </div>
+          <div class="form-group">
+            <label>Distance to Subway(m)</label>
+            <div class="form-row">
+              <div class="col-sm-8"><input type="range" class="form-control form-control-sm form-control-range" id="co-SubwayDis-high" min="0" max="4200" step="100" value="4200"></div>
+              <div class="col-sm-4 text-center"><span id="co-SubwayDis-high-value" style="line-height: 32px;">4200</span></div>
+            </div>
+          </div>
+          <hr>      
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="co-check-bus">
+              <label class="form-check-label" for="co-check-bus">
+                bus stations within 500m
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="co-check-food">
+              <label class="form-check-label" for="co-check-food">
+                restaurants within 500m
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="co-check-bank">
+              <label class="form-check-label" for="co-check-bank">
+                banks within 500m
+              </label>
+            </div>
+          </div>
+          <hr>
+          <div class="form-row">
+            <div class="col-sm-6 px-3 text-center"><button type="button" class="btn btn-sm btn-info w-100" id="co-query">Query</button></div>
+            <div class="col-sm-6 px-3 text-center"><button type="button" class="btn btn-sm btn-outline-info w-100" id="co-delete-query">Reset</button></div>
+          </div>
+        </form>   
+        <div id="co-results"></div>
+      </div>
+      <div id="tra-office-layer">
+        <form>
+          <div class="form-group">
+            <label>District</label>
+            <select class="form-control form-control-sm" id="tra-districtSelect">
+              <option value="0">All</option>
+              <option value="1">Dongcheng</option>
+              <option value="2">Xicheng</option>
+              <option value="3">Chaoyang</option>
+              <option value="4">Haidian</option>
+              <option value="5">Fengtai</option>
+            </select>
+            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+          </div>
+          <div class="form-group">
+            <label>Price (￥/m^2/day)</label>
+            <div class="form-row">
+              <div class="col-sm-4">
+                  <input type="number" name="Price1" id="tra-pri-low" maxlength="4" size="6" value="2" class="form-control form-control-sm">
+              </div>
+              <div class="col-sm-1 text-center" style="line-height: 32px;">-</div>
+              <div class="col-sm-4">
+                  <input type="number" name="Price2" id="tra-pri-high" maxlength="4" size="6" value="35" class="form-control form-control-sm">
+              </div>
+            </div>            
+          </div>
+          <div class="form-group">
+            <label>Area (m^2)</label>
+            <div class="form-row">
+              <div class="col-sm-4">
+                  <input type="number" name="Area1" id="tra-area-low" maxlength="4" size="6" value="20" class="form-control form-control-sm">
+              </div>
+              <div class="col-sm-1 text-center" style="line-height: 32px;">-</div>
+              <div class="col-sm-4">
+                  <input type="number" name="Area2" id="tra-area-high" maxlength="4" size="6" value="4000" class="form-control form-control-sm">
+              </div>
+            </div>            
+          </div>          
+          <div class="form-group">
+            <label>Distance to Subway(m)</label>
+            <div class="form-row">
+              <div class="col-sm-8"><input type="range" class="form-control form-control-sm form-control-range" id="tra-SubwayDis-high" min="0" max="4400" step="100" value="4400"></div>
+              <div class="col-sm-4 text-center"><span id="tra-SubwayDis-high-value" style="line-height: 32px;">4400</span></div>
+            </div>
+          </div>
+          <hr>      
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="tra-check-bus">
+              <label class="form-check-label" for="tra-check-bus">
+                bus stations within 500m
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="tra-check-food">
+              <label class="form-check-label" for="tra-check-food">
+                restaurants within 500m
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="tra-check-bank">
+              <label class="form-check-label" for="tra-check-bank">
+                banks within 500m
+              </label>
+            </div>
+          </div>
+          <hr>
+          <div class="form-row">
+            <div class="col-sm-6 px-3 text-center"><button type="button" class="btn btn-sm btn-info w-100" id="tra-query">Query</button></div>
+            <div class="col-sm-6 px-3 text-center"><button type="button" class="btn btn-sm btn-outline-info w-100" id="tra-delete-query">Reset</button></div>
+          </div>
+        </form>           
+        <div id="tra-results"></div>
+      </div>
+      <!--  
+      <div id="hoverinfo">
+        <span id="name"></span> <br />
+      </div>-->
+      <!--  -->
+    </div>
+    <div id="panel">
+      <canvas id="chart" height="350" width="450"></canvas>
+    </div>
+    <div id="panel2">
+      <p class="text-secondary">Add your interesting point to comparison by simply clicking on it. Click "Reset" to clear all selections.</p>
+      <button type="button" class="btn btn-sm btn-outline-info w-100" id="drawpicture">Reset</button>
+      <hr class="my-1">
+      <canvas id="bar" height="400" width="450"></canvas>
+      <hr>
+      <canvas id="subway" height="400" width="450"></canvas>
+      <hr>
+      <canvas id="tra" height="400" width="450"></canvas>
+      <hr>
+      <canvas id="firm" height="400" width="450"></canvas>
+    </div>
+  </div>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.slim.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcss.com/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <!-- Load the Chart.js library -->
+  <script src="https://cdn.bootcss.com/Chart.js/2.7.1/Chart.min.js"></script>
+  <script src="https://js.arcgis.com/4.11/"></script>  
+  <script src="static/app.js"></script>
+</body>
+
+</html>
